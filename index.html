@@ -8,58 +8,51 @@ body {
   margin: 0;
   font-family: Arial;
   color: white;
-  overflow: hidden;
   background: #05010a;
+  overflow: hidden;
 }
 
 /* ===== SPACE BACKGROUND ===== */
 body::before {
   content: "";
   position: fixed;
-  width: 200%;
-  height: 200%;
+  width: 300%;
+  height: 300%;
   background:
-    radial-gradient(circle at 20% 20%, rgba(168,85,247,0.30), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.08), transparent 35%),
-    radial-gradient(circle at 40% 80%, rgba(99,102,241,0.25), transparent 40%);
-  animation: bgMove 12s infinite alternate ease-in-out;
+    radial-gradient(circle at 20% 20%, rgba(168,85,247,0.35), transparent 40%),
+    radial-gradient(circle at 70% 40%, rgba(255,255,255,0.06), transparent 35%),
+    radial-gradient(circle at 40% 80%, rgba(99,102,241,0.25), transparent 45%),
+    radial-gradient(circle at 90% 90%, rgba(168,85,247,0.18), transparent 40%);
+  animation: drift 20s linear infinite;
   z-index: -1;
 }
 
-@keyframes bgMove {
-  from { transform: translate(-10%, -10%) scale(1); }
-  to { transform: translate(10%, 10%) scale(1.2); }
+@keyframes drift {
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-10%, -10%) scale(1.2); }
+  100% { transform: translate(0,0) scale(1); }
 }
 
-/* ===== FADE ===== */
-.fade {
-  animation: fadeIn 0.8s forwards;
-  opacity: 0;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-/* ================= INTRO ================= */
+/* ===== INTRO LAYER (FULL BLOCK) ===== */
 #intro {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(18px);
+  z-index: 999;
 }
 
 .title {
   font-size: 70px;
   padding: 25px 50px;
   border-radius: 50px;
-  background: rgba(255,255,255,0.06);
-  box-shadow: 0 0 45px rgba(168,85,247,0.35);
-  animation: float 3s infinite ease-in-out, fadeIn 1.2s forwards;
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 0 60px rgba(168,85,247,0.35);
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -77,13 +70,13 @@ body::before {
   cursor: pointer;
   color: white;
   background: linear-gradient(45deg, #8b5cf6, #111827);
-  box-shadow: 0 0 25px rgba(168,85,247,0.4);
+  box-shadow: 0 0 30px rgba(168,85,247,0.4);
   transition: 0.3s;
 }
 
 #playBtn:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 55px rgba(168,85,247,0.7);
+  box-shadow: 0 0 60px rgba(168,85,247,0.7);
 }
 
 .fadeOut {
@@ -94,14 +87,13 @@ body::before {
   to { opacity: 0; transform: scale(1.1); }
 }
 
-/* ================= APP ================= */
+/* ===== APP (COMPLETELY HIDDEN INITIALLY) ===== */
 #app {
   display: none;
   height: 100vh;
-  display: flex;
 }
 
-/* SIDEBAR */
+/* ===== SIDEBAR ===== */
 #sidebar {
   width: 220px;
   background: rgba(255,255,255,0.05);
@@ -116,7 +108,7 @@ body::before {
 .logo {
   font-size: 22px;
   margin-bottom: 20px;
-  text-shadow: 0 0 10px rgba(168,85,247,0.8);
+  text-shadow: 0 0 12px rgba(168,85,247,0.8);
 }
 
 .navBtn {
@@ -131,18 +123,18 @@ body::before {
 
 .navBtn:hover {
   background: rgba(168,85,247,0.25);
-  box-shadow: 0 0 15px rgba(168,85,247,0.4);
   transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(168,85,247,0.4);
 }
 
-/* MAIN */
+/* ===== MAIN ===== */
 #main {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
 }
 
-/* GRID */
+/* ===== HOME GRID ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -155,23 +147,20 @@ body::before {
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: 0.25s;
   border: 1px solid rgba(168,85,247,0.15);
+  transition: 0.25s;
 }
 
 .card:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 25px rgba(168,85,247,0.35);
+  box-shadow: 0 0 30px rgba(168,85,247,0.35);
 }
 
-/* GAME PANELS */
-.game {
-  display: none;
-}
+/* ===== GAMES ===== */
+.game { display: none; }
 
 .panel {
   background: rgba(255,255,255,0.05);
@@ -187,12 +176,9 @@ body::before {
   cursor: pointer;
   transition: 0.2s;
 }
+.cookie:hover { transform: scale(1.2); }
 
-.cookie:hover {
-  transform: scale(1.2);
-}
-
-/* TAG DOT */
+/* TAG */
 .dot {
   width: 45px;
   height: 45px;
@@ -221,55 +207,46 @@ canvas {
 <!-- ===== APP ===== -->
 <div id="app">
 
-  <!-- SIDEBAR -->
-  <div id="sidebar" class="fade">
+  <div id="sidebar">
     <div class="logo">🖊 Pencil Hub</div>
 
-    <button class="navBtn" onclick="goHome()">🏠 Home</button>
+    <button class="navBtn" onclick="home()">🏠 Home</button>
     <button class="navBtn" onclick="openGame('cookie')">🍪 Cookie</button>
     <button class="navBtn" onclick="openGame('tag')">🎯 Tag</button>
     <button class="navBtn" onclick="openGame('dash')">⚡ Dash</button>
     <button class="navBtn" onclick="openGame('runner')">🏃 Runner</button>
   </div>
 
-  <!-- MAIN -->
   <div id="main">
 
-    <!-- HOME -->
-    <div id="home" class="fade">
-      <h1>🎮 Discover Games</h1>
+    <div id="home">
+      <h1>🎮 Games</h1>
 
       <div class="grid">
-
         <div class="card" onclick="openGame('cookie')">🍪 Cookie</div>
         <div class="card" onclick="openGame('tag')">🎯 Tag</div>
         <div class="card" onclick="openGame('dash')">⚡ Dash</div>
         <div class="card" onclick="openGame('runner')">🏃 Runner</div>
-
       </div>
     </div>
 
-    <!-- COOKIE -->
     <div id="cookie" class="game panel">
       <h2>Cookie Clicker</h2>
       <div class="cookie" onclick="cookies++; updateCookie()">🍪</div>
       <p>Cookies: <span id="cookieCount">0</span></p>
     </div>
 
-    <!-- TAG -->
     <div id="tag" class="game panel">
       <h2>Tag Game</h2>
       <div class="dot" id="dot" onclick="tag++; moveDot()"></div>
       <p>Score: <span id="tagScore">0</span></p>
     </div>
 
-    <!-- DASH -->
     <div id="dash" class="game panel">
       <h2>Dash Game</h2>
       <canvas id="dashCanvas" width="500" height="200"></canvas>
     </div>
 
-    <!-- RUNNER -->
     <div id="runner" class="game panel">
       <h2>Runner Game</h2>
       <canvas id="runnerCanvas" width="500" height="200"></canvas>
@@ -280,31 +257,27 @@ canvas {
 
 <script>
 
-/* ===== INTRO ===== */
+/* ===== INTRO FIX (IMPORTANT) ===== */
 function start() {
   document.getElementById("intro").classList.add("fadeOut");
 
   setTimeout(() => {
     document.getElementById("intro").style.display = "none";
     document.getElementById("app").style.display = "flex";
-    goHome();
+    home();
   }, 800);
 }
 
 /* ===== NAV ===== */
-function goHome() {
-  hideAll();
+function home() {
   document.getElementById("home").style.display = "block";
+  document.querySelectorAll(".game").forEach(g => g.style.display = "none");
 }
 
 function openGame(id) {
-  hideAll();
-  document.getElementById(id).style.display = "block";
-}
-
-function hideAll() {
   document.getElementById("home").style.display = "none";
   document.querySelectorAll(".game").forEach(g => g.style.display = "none");
+  document.getElementById(id).style.display = "block";
 }
 
 /* ===== COOKIE ===== */
