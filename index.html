@@ -9,19 +9,19 @@ body {
   font-family: Arial;
   color: white;
   overflow: hidden;
-  background: black;
+  background: #05010a;
 }
 
-/* ===== BACKGROUND ===== */
+/* ===== SPACE BACKGROUND ===== */
 body::before {
   content: "";
   position: fixed;
   width: 200%;
   height: 200%;
   background:
-    radial-gradient(circle at 20% 20%, #00f5ff33, transparent 40%),
-    radial-gradient(circle at 80% 30%, #7b2ff733, transparent 40%),
-    radial-gradient(circle at 40% 80%, #ff00ff22, transparent 40%);
+    radial-gradient(circle at 20% 20%, rgba(168,85,247,0.30), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.08), transparent 35%),
+    radial-gradient(circle at 40% 80%, rgba(99,102,241,0.25), transparent 40%);
   animation: bgMove 12s infinite alternate ease-in-out;
   z-index: -1;
 }
@@ -58,7 +58,7 @@ body::before {
   padding: 25px 50px;
   border-radius: 50px;
   background: rgba(255,255,255,0.06);
-  box-shadow: 0 0 40px rgba(0,255,255,0.3);
+  box-shadow: 0 0 45px rgba(168,85,247,0.35);
   animation: float 3s infinite ease-in-out, fadeIn 1.2s forwards;
 }
 
@@ -76,17 +76,16 @@ body::before {
   border-radius: 30px;
   cursor: pointer;
   color: white;
-  background: linear-gradient(45deg, #00f5ff, #7b2ff7);
-  box-shadow: 0 0 25px rgba(0,255,255,0.4);
+  background: linear-gradient(45deg, #8b5cf6, #111827);
+  box-shadow: 0 0 25px rgba(168,85,247,0.4);
   transition: 0.3s;
 }
 
 #playBtn:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 50px rgba(0,255,255,0.7);
+  box-shadow: 0 0 55px rgba(168,85,247,0.7);
 }
 
-/* fade out intro */
 .fadeOut {
   animation: fadeOut 0.8s forwards;
 }
@@ -105,18 +104,292 @@ body::before {
 /* SIDEBAR */
 #sidebar {
   width: 220px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.05);
   backdrop-filter: blur(15px);
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border-right: 1px solid rgba(168,85,247,0.2);
 }
 
 .logo {
   font-size: 22px;
   margin-bottom: 20px;
-  text-shadow: 0 0 10px cyan;
+  text-shadow: 0 0 10px rgba(168,85,247,0.8);
 }
 
 .navBtn {
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.navBtn:hover {
+  background: rgba(168,85,247,0.25);
+  box-shadow: 0 0 15px rgba(168,85,247,0.4);
+  transform: scale(1.05);
+}
+
+/* MAIN */
+#main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  height: 140px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.25s;
+  border: 1px solid rgba(168,85,247,0.15);
+}
+
+.card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(168,85,247,0.35);
+}
+
+/* GAME PANELS */
+.game {
+  display: none;
+}
+
+.panel {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(168,85,247,0.15);
+}
+
+/* COOKIE */
+.cookie {
+  font-size: 90px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cookie:hover {
+  transform: scale(1.2);
+}
+
+/* TAG DOT */
+.dot {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: red;
+  position: absolute;
+  box-shadow: 0 0 20px red;
+}
+
+/* CANVAS */
+canvas {
+  background: rgba(0,0,0,0.4);
+  border-radius: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== INTRO ===== -->
+<div id="intro">
+  <div class="title">🖊 Pencil Hub</div>
+  <button id="playBtn" onclick="start()">Play</button>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="fade">
+    <div class="logo">🖊 Pencil Hub</div>
+
+    <button class="navBtn" onclick="goHome()">🏠 Home</button>
+    <button class="navBtn" onclick="openGame('cookie')">🍪 Cookie</button>
+    <button class="navBtn" onclick="openGame('tag')">🎯 Tag</button>
+    <button class="navBtn" onclick="openGame('dash')">⚡ Dash</button>
+    <button class="navBtn" onclick="openGame('runner')">🏃 Runner</button>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+
+    <!-- HOME -->
+    <div id="home" class="fade">
+      <h1>🎮 Discover Games</h1>
+
+      <div class="grid">
+
+        <div class="card" onclick="openGame('cookie')">🍪 Cookie</div>
+        <div class="card" onclick="openGame('tag')">🎯 Tag</div>
+        <div class="card" onclick="openGame('dash')">⚡ Dash</div>
+        <div class="card" onclick="openGame('runner')">🏃 Runner</div>
+
+      </div>
+    </div>
+
+    <!-- COOKIE -->
+    <div id="cookie" class="game panel">
+      <h2>Cookie Clicker</h2>
+      <div class="cookie" onclick="cookies++; updateCookie()">🍪</div>
+      <p>Cookies: <span id="cookieCount">0</span></p>
+    </div>
+
+    <!-- TAG -->
+    <div id="tag" class="game panel">
+      <h2>Tag Game</h2>
+      <div class="dot" id="dot" onclick="tag++; moveDot()"></div>
+      <p>Score: <span id="tagScore">0</span></p>
+    </div>
+
+    <!-- DASH -->
+    <div id="dash" class="game panel">
+      <h2>Dash Game</h2>
+      <canvas id="dashCanvas" width="500" height="200"></canvas>
+    </div>
+
+    <!-- RUNNER -->
+    <div id="runner" class="game panel">
+      <h2>Runner Game</h2>
+      <canvas id="runnerCanvas" width="500" height="200"></canvas>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+/* ===== INTRO ===== */
+function start() {
+  document.getElementById("intro").classList.add("fadeOut");
+
+  setTimeout(() => {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+    goHome();
+  }, 800);
+}
+
+/* ===== NAV ===== */
+function goHome() {
+  hideAll();
+  document.getElementById("home").style.display = "block";
+}
+
+function openGame(id) {
+  hideAll();
+  document.getElementById(id).style.display = "block";
+}
+
+function hideAll() {
+  document.getElementById("home").style.display = "none";
+  document.querySelectorAll(".game").forEach(g => g.style.display = "none");
+}
+
+/* ===== COOKIE ===== */
+let cookies = 0;
+function updateCookie() {
+  document.getElementById("cookieCount").innerText = cookies;
+}
+
+/* ===== TAG ===== */
+let tag = 0;
+function moveDot() {
+  let d = document.getElementById("dot");
+  d.style.left = Math.random() * 350 + "px";
+  d.style.top = Math.random() * 250 + "px";
+}
+moveDot();
+
+/* ===== DASH ===== */
+const d = document.getElementById("dashCanvas");
+const dx = d.getContext("2d");
+
+let y = 150, v = 0, g = 1;
+let ox = 500;
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") v = -12;
+});
+
+function dash() {
+  dx.clearRect(0,0,500,200);
+
+  dx.fillStyle = "white";
+  dx.fillRect(0,180,500,20);
+
+  v += g;
+  y += v;
+  if (y > 150) y = 150;
+
+  dx.fillStyle = "#a855f7";
+  dx.fillRect(60, y, 20, 20);
+
+  ox -= 6;
+  if (ox < -20) ox = 500;
+
+  dx.fillStyle = "red";
+  dx.fillRect(ox, 160, 20, 20);
+
+  requestAnimationFrame(dash);
+}
+dash();
+
+/* ===== RUNNER ===== */
+const r = document.getElementById("runnerCanvas");
+const rx = r.getContext("2d");
+
+let ry = 160, j = 0, ox2 = 500;
+
+document.addEventListener("keydown", e => {
+  if (e.code === "ArrowUp") j = -15;
+});
+
+function run() {
+  rx.clearRect(0,0,500,200);
+
+  rx.fillStyle = "white";
+  rx.fillRect(0,180,500,20);
+
+  j += 1;
+  ry += j;
+  if (ry > 160) ry = 160;
+
+  rx.fillStyle = "#22c55e";
+  rx.fillRect(60, ry, 20, 20);
+
+  ox2 -= 6;
+  if (ox2 < -20) ox2 = 500;
+
+  rx.fillStyle = "#f59e0b";
+  rx.fillRect(ox2, 160, 20, 20);
+
+  requestAnimationFrame(run);
+}
+run();
+
+</script>
+
+</body>
+</html>
