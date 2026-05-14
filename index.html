@@ -12,7 +12,7 @@ body {
   overflow: hidden;
 }
 
-/* ===== SPACE BACKGROUND ===== */
+/* ================= SPACE BACKGROUND (MAIN SITE) ================= */
 body::before {
   content: "";
   position: fixed;
@@ -33,7 +33,7 @@ body::before {
   100% { transform: translate(0,0) scale(1); }
 }
 
-/* ===== INTRO LAYER (FULL BLOCK) ===== */
+/* ================= INTRO ================= */
 #intro {
   position: fixed;
   inset: 0;
@@ -41,18 +41,65 @@ body::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(18px);
+  overflow: hidden;
+  background: radial-gradient(circle at center, #0a0014, #000);
   z-index: 999;
 }
 
+/* galaxy swirl layers */
+#intro::before,
+#intro::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(168,85,247,0.35), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(99,102,241,0.25), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 35%);
+  animation: swirl 14s linear infinite;
+  filter: blur(12px);
+}
+
+#intro::after {
+  animation: swirl 22s linear infinite reverse;
+  opacity: 0.7;
+}
+
+@keyframes swirl {
+  0% { transform: translate(0,0) rotate(0deg) scale(1); }
+  50% { transform: translate(-8%, 6%) rotate(180deg) scale(1.2); }
+  100% { transform: translate(0,0) rotate(360deg) scale(1); }
+}
+
+/* star layer */
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.15;
+  animation: starMove 10s linear infinite;
+}
+
+@keyframes starMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(-60px); }
+}
+
+/* title */
 .title {
   font-size: 70px;
   padding: 25px 50px;
   border-radius: 50px;
   background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 60px rgba(168,85,247,0.35);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 0 40px rgba(168,85,247,0.4),
+    0 0 90px rgba(99,102,241,0.25);
   animation: float 3s ease-in-out infinite;
+  z-index: 2;
 }
 
 @keyframes float {
@@ -61,7 +108,9 @@ body::before {
   100% { transform: translateY(0); }
 }
 
+/* play button */
 #playBtn {
+  z-index: 2;
   margin-top: 30px;
   padding: 15px 50px;
   font-size: 20px;
@@ -69,16 +118,21 @@ body::before {
   border-radius: 30px;
   cursor: pointer;
   color: white;
-  background: linear-gradient(45deg, #8b5cf6, #111827);
-  box-shadow: 0 0 30px rgba(168,85,247,0.4);
+  background: linear-gradient(45deg, #8b5cf6, #0f172a);
+  box-shadow:
+    0 0 30px rgba(168,85,247,0.4),
+    0 0 80px rgba(99,102,241,0.2);
   transition: 0.3s;
 }
 
 #playBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 60px rgba(168,85,247,0.7);
+  transform: scale(1.15);
+  box-shadow:
+    0 0 60px rgba(168,85,247,0.7),
+    0 0 100px rgba(99,102,241,0.4);
 }
 
+/* fade out */
 .fadeOut {
   animation: fadeOut 0.8s forwards;
 }
@@ -87,13 +141,13 @@ body::before {
   to { opacity: 0; transform: scale(1.1); }
 }
 
-/* ===== APP (COMPLETELY HIDDEN INITIALLY) ===== */
+/* ================= APP ================= */
 #app {
   display: none;
   height: 100vh;
 }
 
-/* ===== SIDEBAR ===== */
+/* sidebar */
 #sidebar {
   width: 220px;
   background: rgba(255,255,255,0.05);
@@ -127,14 +181,14 @@ body::before {
   box-shadow: 0 0 18px rgba(168,85,247,0.4);
 }
 
-/* ===== MAIN ===== */
+/* main */
 #main {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
 }
 
-/* ===== HOME GRID ===== */
+/* grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -159,7 +213,7 @@ body::before {
   box-shadow: 0 0 30px rgba(168,85,247,0.35);
 }
 
-/* ===== GAMES ===== */
+/* games */
 .game { display: none; }
 
 .panel {
@@ -170,15 +224,13 @@ body::before {
   border: 1px solid rgba(168,85,247,0.15);
 }
 
-/* COOKIE */
+/* cookie */
 .cookie {
   font-size: 90px;
   cursor: pointer;
-  transition: 0.2s;
 }
-.cookie:hover { transform: scale(1.2); }
 
-/* TAG */
+/* tag */
 .dot {
   width: 45px;
   height: 45px;
@@ -188,7 +240,7 @@ body::before {
   box-shadow: 0 0 20px red;
 }
 
-/* CANVAS */
+/* canvas */
 canvas {
   background: rgba(0,0,0,0.4);
   border-radius: 12px;
@@ -198,13 +250,14 @@ canvas {
 
 <body>
 
-<!-- ===== INTRO ===== -->
+<!-- ================= INTRO ================= -->
 <div id="intro">
+  <div class="stars"></div>
   <div class="title">🖊 Pencil Hub</div>
   <button id="playBtn" onclick="start()">Play</button>
 </div>
 
-<!-- ===== APP ===== -->
+<!-- ================= APP ================= -->
 <div id="app">
 
   <div id="sidebar">
@@ -257,7 +310,7 @@ canvas {
 
 <script>
 
-/* ===== INTRO FIX (IMPORTANT) ===== */
+/* intro */
 function start() {
   document.getElementById("intro").classList.add("fadeOut");
 
@@ -268,7 +321,7 @@ function start() {
   }, 800);
 }
 
-/* ===== NAV ===== */
+/* nav */
 function home() {
   document.getElementById("home").style.display = "block";
   document.querySelectorAll(".game").forEach(g => g.style.display = "none");
@@ -280,13 +333,13 @@ function openGame(id) {
   document.getElementById(id).style.display = "block";
 }
 
-/* ===== COOKIE ===== */
+/* cookie */
 let cookies = 0;
 function updateCookie() {
   document.getElementById("cookieCount").innerText = cookies;
 }
 
-/* ===== TAG ===== */
+/* tag */
 let tag = 0;
 function moveDot() {
   let d = document.getElementById("dot");
@@ -295,7 +348,7 @@ function moveDot() {
 }
 moveDot();
 
-/* ===== DASH ===== */
+/* dash */
 const d = document.getElementById("dashCanvas");
 const dx = d.getContext("2d");
 
@@ -329,7 +382,7 @@ function dash() {
 }
 dash();
 
-/* ===== RUNNER ===== */
+/* runner */
 const r = document.getElementById("runnerCanvas");
 const rx = r.getContext("2d");
 
