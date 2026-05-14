@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pencil Hub</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0a0a0a;
+  color: white;
+  overflow: hidden;
+}
+
+/* ===== INTRO SCREEN ===== */
+#intro {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top, #1a1a2e, #000);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bubble Title */
+.title {
+  font-size: 60px;
+  font-weight: bold;
+  padding: 20px 40px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0,255,255,0.3);
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Play button */
+#playBtn {
+  margin-top: 30px;
+  padding: 15px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #00f5ff, #7b2ff7);
+  color: white;
+  box-shadow: 0 0 20px rgba(0,255,255,0.4);
+  transition: 0.3s;
+}
+
+#playBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 40px rgba(0,255,255,0.6);
+}
+
+/* fade out intro */
+.fadeOut {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; transform: scale(1.2); }
+}
+
+/* ===== GAME HUB ===== */
+#hub {
+  display: none;
+  text-align: center;
+  padding: 20px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+/* games */
+.game {
+  display: none;
+  margin-top: 20px;
+}
+
+/* cookie */
+.cookie {
+  font-size: 80px;
+  cursor: pointer;
+}
+
+/* dot */
+.dot {
+  width: 50px;
+  height: 50px;
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+}
+
+/* canvas */
+canvas {
+  background: #111;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== INTRO ===== -->
+<div id="intro">
+  <div class="title">🖊 Pencil Hub</div>
+  <button id="playBtn" onclick="startHub()">Play</button>
+</div>
+
+<!-- ===== HUB ===== -->
+<div id="hub">
+
+<h1>🎮 Game Hub</h1>
+
+<button onclick="show('cookie')">Cookie Clicker</button>
+<button onclick="show('tag')">Tag Game</button>
+<button onclick="show('dash')">Dash</button>
+<button onclick="show('runner')">Runner</button>
+
+<!-- COOKIE -->
+<div id="cookie" class="game">
+  <h2>Cookie Clicker</h2>
+  <div class="cookie" onclick="cookies++; updateCookie()">🍪</div>
+  <p>Cookies: <span id="cookieCount">0</span></p>
+</div>
+
+<!-- TAG -->
+<div id="tag" class="game">
+  <h2>Tag Game</h2>
+  <div class="dot" id="dot" onclick="tagScore++; moveDot()"></div>
+  <p>Score: <span id="tagScore">0</span></p>
+</div>
+
+<!-- DASH -->
+<div id="dash" class="game">
+  <h2>Dash Game</h2>
+  <canvas id="dashCanvas" width="400" height="200"></canvas>
+</div>
+
+<!-- RUNNER -->
+<div id="runner" class="game">
+  <h2>Runner Game</h2>
+  <canvas id="runnerCanvas" width="400" height="200"></canvas>
+</div>
+
+</div>
+
+<script>
+
+/* ===== INTRO CONTROL ===== */
+function startHub() {
+  document.getElementById("intro").classList.add("fadeOut");
+
+  setTimeout(() => {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("hub").style.display = "block";
+  }, 900);
+}
+
+/* ===== HUB NAV ===== */
+function show(id) {
+  document.querySelectorAll(".game").forEach(g => g.style.display = "none");
+  document.getElementById(id).style.display = "block";
+}
+
+/* ===== COOKIE ===== */
+let cookies = 0;
+function updateCookie() {
+  document.getElementById("cookieCount").innerText = cookies;
+}
+
+/* ===== TAG ===== */
+let tagScore = 0;
+function moveDot() {
+  let dot = document.getElementById("dot");
+  dot.style.left = Math.random() * 300 + "px";
+  dot.style.top = Math.random() * 300 + "px";
+}
+moveDot();
+
+/* ===== DASH ===== */
+const d = document.getElementById("dashCanvas");
+const dx = d.getContext("2d");
+
+let py = 150, vel = 0, g = 1;
+let ox = 400;
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") vel = -12;
+});
+
+function dashLoop() {
+  dx.clearRect(0,0,400,200);
+
+  dx.fillStyle = "white";
+  dx.fillRect(0,180,400,20);
+
+  vel += g;
+  py += vel;
+  if (py > 150) py = 150;
+
+  dx.fillStyle = "cyan";
+  dx.fillRect(50, py, 20, 20);
+
+  ox -= 5;
+  if (ox < -20) ox = 400;
+
+  dx.fillStyle = "red";
+  dx.fillRect(ox, 160, 20, 20);
+
+  requestAnimationFrame(dashLoop);
+}
+dashLoop();
+
+/* ===== RUNNER ===== */
+const r = document.getElementById("runnerCanvas");
+const rx = r.getContext("2d");
+
+let ry = 160, j = 0, ox2 = 400;
+
+document.addEventListener("keydown", e => {
+  if (e.code === "ArrowUp") j = -15;
+});
+
+function runnerLoop() {
+  rx.clearRect(0,0,400,200);
+
+  rx.fillStyle = "white";
+  rx.fillRect(0,180,400,20);
+
+  j += 1;
+  ry += j;
+  if (ry > 160) ry = 160;
+
+  rx.fillStyle = "lime";
+  rx.fillRect(50, ry, 20, 20);
+
+  ox2 -= 6;
+  if (ox2 < -20) ox2 = 400;
+
+  rx.fillStyle = "orange";
+  rx.fillRect(ox2, 160, 20, 20);
+
+  requestAnimationFrame(runnerLoop);
+}
+runnerLoop();
+
+</script>
+
+</body>
+</html>
