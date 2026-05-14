@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Home | Schoology</title>
+<title>Pencil Hub</title>
 
 <style>
 body {
@@ -12,122 +12,118 @@ body {
   background: black;
 }
 
-/* ===== ANIMATED BACKGROUND ===== */
+/* ===== NEON BACKGROUND ===== */
 body::before {
   content: "";
   position: fixed;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle at 20% 20%, #00f5ff33, transparent 40%),
-              radial-gradient(circle at 80% 30%, #7b2ff733, transparent 40%),
-              radial-gradient(circle at 40% 80%, #ff00ff22, transparent 40%);
-  animation: moveBg 10s infinite alternate ease-in-out;
+  background:
+    radial-gradient(circle at 20% 20%, #00f5ff33, transparent 40%),
+    radial-gradient(circle at 80% 30%, #7b2ff733, transparent 40%),
+    radial-gradient(circle at 40% 80%, #ff00ff22, transparent 40%);
+  animation: bgMove 12s infinite alternate ease-in-out;
   z-index: -1;
 }
 
-@keyframes moveBg {
+@keyframes bgMove {
   from { transform: translate(-10%, -10%) scale(1); }
   to { transform: translate(10%, 10%) scale(1.2); }
 }
 
-/* ===== FADE IN SYSTEM ===== */
+/* ===== FADE ===== */
 .fade {
+  animation: fadeIn 0.6s forwards;
   opacity: 0;
-  animation: fadeIn 1s forwards;
 }
 
 @keyframes fadeIn {
   to { opacity: 1; }
 }
 
-/* ===== INTRO ===== */
-#intro {
-  position: fixed;
-  width: 100%;
-  height: 100%;
+/* ===== LAYOUT ===== */
+#app {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== SIDEBAR (Roblox style) ===== */
+#sidebar {
+  width: 220px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(15px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px cyan;
+}
+
+.navBtn {
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.navBtn:hover {
+  background: rgba(0,255,255,0.2);
+  transform: scale(1.05);
+}
+
+/* ===== MAIN AREA ===== */
+#main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ===== HOME GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+/* game cards (Roblox style) */
+.card {
+  height: 140px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(10px);
-}
-
-.title {
-  font-size: 70px;
-  padding: 25px 50px;
-  border-radius: 50px;
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(15px);
-  box-shadow: 0 0 40px rgba(0,255,255,0.3);
-  animation: float 3s infinite ease-in-out, fadeIn 1.5s forwards;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
-}
-
-#playBtn {
-  margin-top: 30px;
-  padding: 15px 50px;
-  font-size: 20px;
-  border: none;
-  border-radius: 30px;
   cursor: pointer;
-  color: white;
-  background: linear-gradient(45deg, #00f5ff, #7b2ff7);
-  box-shadow: 0 0 25px rgba(0,255,255,0.4);
-  transition: 0.3s;
-  animation: fadeIn 2s forwards;
+  transition: 0.25s;
 }
 
-#playBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 50px rgba(0,255,255,0.7);
+.card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(0,255,255,0.3);
 }
 
-/* ===== HUB ===== */
-#hub {
-  display: none;
-  text-align: center;
-  padding: 20px;
-  animation: fadeIn 1s forwards;
-}
-
-/* glass panel */
-.panel {
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 20px;
-  margin-top: 10px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-/* buttons */
-button {
-  padding: 10px 15px;
-  margin: 5px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  background: rgba(255,255,255,0.08);
-  color: white;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.1);
-  background: rgba(0,255,255,0.2);
-  box-shadow: 0 0 20px rgba(0,255,255,0.3);
-}
-
-/* games */
+/* ===== GAME VIEW ===== */
 .game {
   display: none;
-  margin-top: 20px;
-  animation: fadeIn 0.6s forwards;
+}
+
+/* canvas style */
+canvas {
+  background: rgba(0,0,0,0.4);
+  border-radius: 12px;
 }
 
 /* cookie */
@@ -136,95 +132,113 @@ button:hover {
   cursor: pointer;
   transition: 0.2s;
 }
-
-.cookie:hover {
-  transform: scale(1.2);
-}
+.cookie:hover { transform: scale(1.2); }
 
 /* dot */
 .dot {
-  width: 50px;
-  height: 50px;
-  background: red;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  background: red;
   position: absolute;
   box-shadow: 0 0 20px red;
-}
-
-/* canvas */
-canvas {
-  background: rgba(0,0,0,0.4);
-  border-radius: 15px;
-  box-shadow: 0 0 25px rgba(0,255,255,0.15);
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== INTRO ===== -->
-<div id="intro">
-  <div class="title">🖊 Pencil Hub</div>
-  <button id="playBtn" onclick="start()">Play</button>
-</div>
+<div id="app">
 
-<!-- ===== HUB ===== -->
-<div id="hub">
+  <!-- ===== SIDEBAR ===== -->
+  <div id="sidebar" class="fade">
+    <div class="logo">🖊 Pencil Hub</div>
 
-<h1 class="fade">🎮 Game Hub</h1>
+    <button class="navBtn" onclick="goHome()">🏠 Home</button>
+    <button class="navBtn" onclick="openGame('cookie')">🍪 Cookie Clicker</button>
+    <button class="navBtn" onclick="openGame('tag')">🎯 Tag</button>
+    <button class="navBtn" onclick="openGame('dash')">⚡ Dash</button>
+    <button class="navBtn" onclick="openGame('runner')">🏃 Runner</button>
+  </div>
 
-<div class="panel fade">
-  <button onclick="show('cookie')">Cookie Clicker</button>
-  <button onclick="show('tag')">Tag</button>
-  <button onclick="show('dash')">Dash</button>
-  <button onclick="show('runner')">Runner</button>
-</div>
+  <!-- ===== MAIN ===== -->
+  <div id="main">
 
-<!-- COOKIE -->
-<div id="cookie" class="game panel">
-  <h2>Cookie Clicker</h2>
-  <div class="cookie" onclick="cookies++; updateCookie()">🍪</div>
-  <p>Cookies: <span id="cookieCount">0</span></p>
-</div>
+    <!-- HOME SCREEN -->
+    <div id="home" class="fade">
 
-<!-- TAG -->
-<div id="tag" class="game panel">
-  <h2>Tag Game</h2>
-  <div class="dot" id="dot" onclick="tag++; moveDot()"></div>
-  <p>Score: <span id="tagScore">0</span></p>
-</div>
+      <h1>🎮 Discover Games</h1>
 
-<!-- DASH -->
-<div id="dash" class="game panel">
-  <h2>Dash Game</h2>
-  <canvas id="dashCanvas" width="400" height="200"></canvas>
-</div>
+      <div class="grid">
 
-<!-- RUNNER -->
-<div id="runner" class="game panel">
-  <h2>Runner Game</h2>
-  <canvas id="runnerCanvas" width="400" height="200"></canvas>
-</div>
+        <div class="card" onclick="openGame('cookie')">
+          🍪
+          <h3>Cookie Clicker</h3>
+        </div>
 
+        <div class="card" onclick="openGame('tag')">
+          🎯
+          <h3>Tag Game</h3>
+        </div>
+
+        <div class="card" onclick="openGame('dash')">
+          ⚡
+          <h3>Dash</h3>
+        </div>
+
+        <div class="card" onclick="openGame('runner')">
+          🏃
+          <h3>Runner</h3>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COOKIE -->
+    <div id="cookie" class="game fade">
+      <h2>Cookie Clicker</h2>
+      <div class="cookie" onclick="cookies++; updateCookie()">🍪</div>
+      <p>Cookies: <span id="cookieCount">0</span></p>
+    </div>
+
+    <!-- TAG -->
+    <div id="tag" class="game fade">
+      <h2>Tag Game</h2>
+      <div class="dot" id="dot" onclick="tag++; moveDot()"></div>
+      <p>Score: <span id="tagScore">0</span></p>
+    </div>
+
+    <!-- DASH -->
+    <div id="dash" class="game fade">
+      <h2>Dash Game</h2>
+      <canvas id="dashCanvas" width="500" height="200"></canvas>
+    </div>
+
+    <!-- RUNNER -->
+    <div id="runner" class="game fade">
+      <h2>Runner Game</h2>
+      <canvas id="runnerCanvas" width="500" height="200"></canvas>
+    </div>
+
+  </div>
 </div>
 
 <script>
 
-/* ===== INTRO ===== */
-function start() {
-  document.getElementById("intro").style.transition = "1s";
-  document.getElementById("intro").style.opacity = "0";
-
-  setTimeout(() => {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("hub").style.display = "block";
-  }, 900);
+/* ===== NAV ===== */
+function goHome() {
+  hideAll();
+  document.getElementById("home").style.display = "block";
 }
 
-/* ===== MENU ===== */
-function show(id) {
-  document.querySelectorAll(".game").forEach(g => g.style.display = "none");
+function openGame(id) {
+  hideAll();
   document.getElementById(id).style.display = "block";
+}
+
+function hideAll() {
+  document.querySelectorAll(".game").forEach(g => g.style.display = "none");
+  document.getElementById("home").style.display = "none";
 }
 
 /* ===== COOKIE ===== */
@@ -237,7 +251,7 @@ function updateCookie() {
 let tag = 0;
 function moveDot() {
   let d = document.getElementById("dot");
-  d.style.left = Math.random() * 300 + "px";
+  d.style.left = Math.random() * 350 + "px";
   d.style.top = Math.random() * 250 + "px";
 }
 moveDot();
@@ -247,60 +261,60 @@ const d = document.getElementById("dashCanvas");
 const dx = d.getContext("2d");
 
 let y = 150, v = 0, g = 1;
-let ox = 400;
+let ox = 500;
 
 document.addEventListener("keydown", e => {
   if (e.code === "Space") v = -12;
 });
 
-function dash() {
-  dx.clearRect(0,0,400,200);
+function dashLoop() {
+  dx.clearRect(0,0,500,200);
 
   dx.fillStyle = "white";
-  dx.fillRect(0,180,400,20);
+  dx.fillRect(0,180,500,20);
 
   v += g;
   y += v;
   if (y > 150) y = 150;
 
   dx.fillStyle = "cyan";
-  dx.fillRect(50, y, 20, 20);
+  dx.fillRect(60, y, 20, 20);
 
-  ox -= 5;
-  if (ox < -20) ox = 400;
+  ox -= 6;
+  if (ox < -20) ox = 500;
 
   dx.fillStyle = "red";
   dx.fillRect(ox, 160, 20, 20);
 
-  requestAnimationFrame(dash);
+  requestAnimationFrame(dashLoop);
 }
-dash();
+dashLoop();
 
 /* ===== RUNNER ===== */
 const r = document.getElementById("runnerCanvas");
 const rx = r.getContext("2d");
 
-let ry = 160, j = 0, ox2 = 400;
+let ry = 160, j = 0, ox2 = 500;
 
 document.addEventListener("keydown", e => {
   if (e.code === "ArrowUp") j = -15;
 });
 
 function run() {
-  rx.clearRect(0,0,400,200);
+  rx.clearRect(0,0,500,200);
 
   rx.fillStyle = "white";
-  rx.fillRect(0,180,400,20);
+  rx.fillRect(0,180,500,20);
 
   j += 1;
   ry += j;
   if (ry > 160) ry = 160;
 
   rx.fillStyle = "lime";
-  rx.fillRect(50, ry, 20, 20);
+  rx.fillRect(60, ry, 20, 20);
 
   ox2 -= 6;
-  if (ox2 < -20) ox2 = 400;
+  if (ox2 < -20) ox2 = 500;
 
   rx.fillStyle = "orange";
   rx.fillRect(ox2, 160, 20, 20);
