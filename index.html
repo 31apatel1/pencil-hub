@@ -6,34 +6,32 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   color: white;
   background: #05010a;
   overflow: hidden;
 }
 
-/* ===== SPACE BACKGROUND ===== */
+/* ================= SPACE BACKGROUND ================= */
 body::before {
   content: "";
   position: fixed;
-  width: 300%;
-  height: 300%;
+  inset: 0;
   background:
-    radial-gradient(circle at 20% 20%, rgba(168,85,247,0.35), transparent 40%),
-    radial-gradient(circle at 70% 40%, rgba(255,255,255,0.06), transparent 35%),
-    radial-gradient(circle at 40% 80%, rgba(99,102,241,0.25), transparent 45%),
-    radial-gradient(circle at 90% 90%, rgba(168,85,247,0.18), transparent 40%);
-  animation: drift 20s linear infinite;
+    radial-gradient(circle at 20% 20%, rgba(168,85,247,0.30), transparent 40%),
+    radial-gradient(circle at 70% 40%, rgba(99,102,241,0.18), transparent 45%),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.05), transparent 50%);
+  animation: drift 18s ease-in-out infinite;
   z-index: -1;
 }
 
 @keyframes drift {
-  0% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(-10%, -10%) scale(1.2); }
-  100% { transform: translate(0,0) scale(1); }
+  0% { transform: scale(1) translate(0,0); }
+  50% { transform: scale(1.15) translate(-5%, -5%); }
+  100% { transform: scale(1) translate(0,0); }
 }
 
-/* ===== INTRO ===== */
+/* ================= INTRO ================= */
 #intro {
   position: fixed;
   inset: 0;
@@ -42,44 +40,33 @@ body::before {
   justify-content: center;
   align-items: center;
   background: radial-gradient(circle at center, #0a0014, #000);
-  backdrop-filter: blur(20px);
   z-index: 999;
+  overflow: hidden;
 }
 
-/* galaxy layers */
-#intro::before,
-#intro::after {
+/* soft moving glow */
+#intro::before {
   content: "";
   position: absolute;
-  width: 200%;
-  height: 200%;
+  inset: -50%;
   background:
     radial-gradient(circle at 30% 30%, rgba(168,85,247,0.35), transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(99,102,241,0.25), transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 35%);
+    radial-gradient(circle at 70% 60%, rgba(99,102,241,0.25), transparent 45%);
   animation: swirl 14s linear infinite;
-  filter: blur(12px);
-}
-
-#intro::after {
-  animation: swirl 22s linear infinite reverse;
-  opacity: 0.7;
+  filter: blur(20px);
 }
 
 @keyframes swirl {
-  0% { transform: translate(0,0) rotate(0deg) scale(1); }
-  50% { transform: translate(-8%, 6%) rotate(180deg) scale(1.2); }
-  100% { transform: translate(0,0) rotate(360deg) scale(1); }
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1.2); }
 }
 
-/* stars */
 .stars {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-image: radial-gradient(white 1px, transparent 1px);
   background-size: 40px 40px;
-  opacity: 0.15;
+  opacity: 0.12;
   animation: starMove 10s linear infinite;
 }
 
@@ -88,61 +75,61 @@ body::before {
   to { transform: translateY(-60px); }
 }
 
-/* title */
 .title {
-  font-size: 70px;
-  padding: 25px 50px;
-  border-radius: 50px;
+  font-size: 64px;
+  padding: 20px 45px;
+  border-radius: 40px;
   background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 50px rgba(168,85,247,0.4);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 40px rgba(168,85,247,0.4);
   animation: float 3s ease-in-out infinite;
+  z-index: 2;
 }
 
 @keyframes float {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  50% { transform: translateY(-12px); }
   100% { transform: translateY(0); }
 }
 
-/* play */
 #playBtn {
-  margin-top: 30px;
-  padding: 15px 50px;
-  font-size: 20px;
+  margin-top: 25px;
+  padding: 14px 48px;
+  font-size: 18px;
   border: none;
   border-radius: 30px;
   cursor: pointer;
   color: white;
-  background: linear-gradient(45deg, #8b5cf6, #0f172a);
-  box-shadow: 0 0 30px rgba(168,85,247,0.4);
-  transition: 0.3s;
+  background: linear-gradient(45deg, #8b5cf6, #111827);
+  box-shadow: 0 0 35px rgba(168,85,247,0.4);
+  transition: 0.25s;
+  z-index: 2;
 }
 
 #playBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 60px rgba(168,85,247,0.7);
+  transform: scale(1.08);
+  box-shadow: 0 0 60px rgba(168,85,247,0.6);
 }
 
-/* fade */
 .fadeOut {
-  animation: fadeOut 0.8s forwards;
+  animation: fadeOut 0.7s forwards;
 }
 
 @keyframes fadeOut {
-  to { opacity: 0; transform: scale(1.1); }
+  to { opacity: 0; transform: scale(1.05); }
 }
 
-/* ===== APP ===== */
+/* ================= APP ================= */
 #app {
   display: none;
   height: 100vh;
 }
 
-/* sidebar */
+/* ================= SIDEBAR ================= */
 #sidebar {
   width: 220px;
   background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(16px);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -153,7 +140,7 @@ body::before {
 .logo {
   font-size: 22px;
   margin-bottom: 20px;
-  text-shadow: 0 0 12px rgba(168,85,247,0.8);
+  text-shadow: 0 0 12px rgba(168,85,247,0.7);
 }
 
 .navBtn {
@@ -169,16 +156,21 @@ body::before {
 .navBtn:hover {
   background: rgba(168,85,247,0.25);
   transform: scale(1.05);
-  box-shadow: 0 0 18px rgba(168,85,247,0.4);
+  box-shadow: 0 0 18px rgba(168,85,247,0.35);
 }
 
-/* main */
+/* ================= MAIN ================= */
 #main {
   flex: 1;
   padding: 20px;
+  overflow-y: auto;
 }
 
-/* grid */
+h1 {
+  margin-top: 0;
+}
+
+/* ================= GRID ================= */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -196,60 +188,61 @@ body::before {
   cursor: pointer;
   border: 1px solid rgba(168,85,247,0.15);
   transition: 0.25s;
+  font-size: 18px;
 }
 
 .card:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 30px rgba(168,85,247,0.35);
+  transform: scale(1.06);
+  box-shadow: 0 0 25px rgba(168,85,247,0.35);
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== INTRO ===== -->
+<!-- ================= INTRO ================= -->
 <div id="intro">
   <div class="stars"></div>
-  <div class="title">🖊 Pencil Hub</div>
+  <div class="title">Pencil Hub</div>
   <button id="playBtn" onclick="start()">Play</button>
 </div>
 
-<!-- ===== APP ===== -->
+<!-- ================= APP ================= -->
 <div id="app">
 
   <div id="sidebar">
-    <div class="logo">🖊 Pencil Hub</div>
+    <div class="logo">Pencil Hub</div>
 
-    <!-- YOUR REAL GAMES -->
-    <button class="navBtn" onclick="location.href='clcookieclicker.html'">🍪 Cookie Clicker</button>
+    <!-- YOUR GAMES -->
+    <button class="navBtn" onclick="location.href='clcookieclicker.html'">Cookie Clicker</button>
 
-    <button class="navBtn" onclick="location.href='clescaperoadcity2.html'">🚗 Escape Road City</button>
+    <button class="navBtn" onclick="location.href='clescaperoadcity2.html'">Escape Road City 2</button>
   </div>
 
   <div id="main">
     <h1>🎮 Games</h1>
 
     <div class="grid">
-      <div class="card" onclick="location.href='clcookieclicker.html'">🍪 Cookie Clicker</div>
+      <div class="card" onclick="location.href='clcookieclicker.html'">Cookie Clicker</div>
 
-      <div class="card" onclick="location.href='clescaperoadcity2.html'">🚗 Escape Road City</div>
+      <div class="card" onclick="location.href='clescaperoadcity2.html'">Escape Road City 2</div>
     </div>
   </div>
 
 </div>
 
 <script>
-
-/* intro start */
 function start() {
-  document.getElementById("intro").classList.add("fadeOut");
+  const intro = document.getElementById("intro");
+  const app = document.getElementById("app");
+
+  intro.classList.add("fadeOut");
 
   setTimeout(() => {
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("app").style.display = "flex";
-  }, 800);
+    intro.style.display = "none";
+    app.style.display = "flex";
+  }, 700);
 }
-
 </script>
 
 </body>
